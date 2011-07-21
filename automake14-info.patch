@@ -1,0 +1,103 @@
+--- automake-1.4-p6/automake.texi.rh1	1999-01-06 14:01:26.000000000 +0100
++++ automake-1.4-p6/automake.texi	2007-02-15 17:15:34.000000000 +0100
+@@ -1,7 +1,7 @@
+ \input texinfo   @c -*-texinfo-*-
+ @c %**start of header
+-@setfilename automake.info
+-@settitle automake
++@setfilename automake14.info
++@settitle automake14
+ @setchapternewpage off
+ @c %**end of header
+ 
+@@ -9,12 +9,12 @@
+ 
+ @dircategory GNU admin
+ @direntry
+-* automake: (automake).		Making Makefile.in's
++* automake14: (automake14).	Making Makefile.in's
+ @end direntry
+ 
+ @dircategory Individual utilities
+ @direntry
+-* aclocal: (automake)Invoking aclocal.          Generating aclocal.m4
++* aclocal14: (automake14)Invoking aclocal.      Generating aclocal.m4
+ @end direntry
+ 
+ @ifinfo
+--- automake-1.4-p6/Makefile.in.rh1	2002-07-27 23:09:40.000000000 +0200
++++ automake-1.4-p6/Makefile.in	2007-02-15 17:13:56.000000000 +0100
+@@ -72,21 +72,34 @@
+ SUBDIRS = . m4 tests
+ 
+ bin_SCRIPTS = automake aclocal
+-info_TEXINFOS = automake.texi
++info_TEXINFOS = automake14.texi
+ 
+-amfiles = clean-hdr.am clean-kr.am clean.am comp-vars.am compile.am data-clean.am data.am dejagnu.am depend.am depend2.am dist-vars.am footer.am header-vars.am header.am java-clean.am java.am kr-extra.am library.am libs-clean.am libs.am libtool.am lisp-clean.am lisp.am ltlib-clean.am ltlib.am ltlibrary.am mans-vars.am mans.am multilib.am program.am progs-clean.am progs.am remake-hdr.am remake.am scripts.am subdirs.am tags-clean.am tags.am texi-vers.am texinfos.am
++amfiles = clean-hdr.am clean-kr.am clean.am comp-vars.am compile.am \
++data-clean.am data.am dejagnu.am depend.am depend2.am dist-vars.am \
++footer.am header-vars.am header.am java-clean.am java.am kr-extra.am \
++library.am libs-clean.am libs.am libtool.am lisp-clean.am lisp.am \
++ltlib-clean.am ltlib.am ltlibrary.am mans-vars.am mans.am multilib.am \
++program.am progs-clean.am progs.am remake-hdr.am remake.am scripts.am \
++subdirs.am tags-clean.am tags.am texi-vers.am texinfos.am
+ 
+ 
+ pkgvdata_DATA = COPYING INSTALL texinfo.tex ansi2knr.c ansi2knr.1 $(amfiles)
+ 
+ scriptdir = $(pkgvdatadir)
+-script_DATA = config.guess config.sub install-sh mdate-sh missing mkinstalldirs elisp-comp ylwrap acinstall
++script_DATA = config.guess config.sub install-sh mdate-sh missing \
++mkinstalldirs elisp-comp ylwrap acinstall
+ 
+ 
+ EXTRA_DIST = acinstall $(pkgvdata_DATA) $(script_DATA)
+ 
+-ETAGS_ARGS = $(amfiles)
+-TAGS_DEPENDENCIES = $(ETAGS_ARGS)
++# The following requires a fixed version of the Emacs 19.30 etags.
++ETAGS_ARGS = automake.in aclocal.in --lang=none \
++ --regex='/^@node[ \t]+\([^,]+\)/\1/' automake14.texi
++
++TAGS_DEPENDENCIES = automake.in aclocal.in automake14.texi
++
++#ETAGS_ARGS = $(amfiles)
++#TAGS_DEPENDENCIES = $(ETAGS_ARGS)
+ 
+ DISTCLEANFILES = automake.cm automake.ov
+ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+@@ -95,9 +108,9 @@
+ SCRIPTS =  $(bin_SCRIPTS)
+ 
+ TEXI2DVI = texi2dvi
+-INFO_DEPS = automake.info
++INFO_DEPS = automake14.info
+ DVIS = automake.dvi
+-TEXINFOS = automake.texi
++TEXINFOS = automake14.texi
+ DATA =  $(pkgvdata_DATA) $(script_DATA)
+ 
+ DIST_COMMON =  README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
+@@ -154,8 +167,8 @@
+ $(srcdir)/version.texi: stamp-vti
+ 	@:
+ 
+-$(srcdir)/stamp-vti: automake.texi $(top_srcdir)/configure.in
+-	@echo "@set UPDATED `$(SHELL) $(srcdir)/mdate-sh $(srcdir)/automake.texi`" > vti.tmp
++$(srcdir)/stamp-vti: automake14.texi $(top_srcdir)/configure.in
++	@echo "@set UPDATED `$(SHELL) $(srcdir)/mdate-sh $(srcdir)/automake14.texi`" > vti.tmp
+ 	@echo "@set EDITION $(VERSION)" >> vti.tmp
+ 	@echo "@set VERSION $(VERSION)" >> vti.tmp
+ 	@cmp -s vti.tmp $(srcdir)/version.texi \
+@@ -174,8 +187,8 @@
+ maintainer-clean-vti:
+ 	-rm -f $(srcdir)/stamp-vti $(srcdir)/version.texi
+ 
+-automake.info: automake.texi version.texi
+-automake.dvi: automake.texi version.texi
++automake14.info: automake14.texi version.texi
++automake.dvi: automake14.texi version.texi
+ 
+ 
+ DVIPS = dvips
